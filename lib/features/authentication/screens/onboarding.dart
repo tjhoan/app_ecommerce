@@ -10,7 +10,7 @@ class OnboardingScreen extends StatelessWidget {
         children: [
             // Páginas desplazables horizontalmente
             PageView(
-              children: [
+              children: const [
                 Column(
                   // Image(image: AssetImage(TImage.onBoardingImage1),)
                 )
