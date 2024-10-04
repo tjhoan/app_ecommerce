@@ -1,5 +1,5 @@
 name: project_s6_mobile
-description: "A new Flutter project."
+description: 'A new Flutter project.'
 publish_to: 'none'
 
 version: 1.0.0+1
@@ -19,6 +19,9 @@ dependencies:
   url_launcher: ^6.1.12
   flutter_native_splash: ^2.3.2
   smooth_page_indicator: ^1.1.0
+
+  carousel_slider: ^5.0.0
+  material_design_icons_flutter: ^7.0.7296
 
   # Icons
   iconsax: ^0.0.8
@@ -40,17 +43,22 @@ dev_dependencies:
 flutter:
   uses-material-design: true
 
-# ------------------ LOCAL ASSETS ------------------ 
+  # ------------------ LOCAL ASSETS ------------------
 
   assets:
-
     - assets/logos/
     - assets/icons/
     - assets/images/
     - assets/images/on_boarding_images/
 
-# ------------------ LOCAL FONTS ------------------ 
-  fonts: 
+    - assets/ropa/camisa.jpg
+    - assets/ropa/zap_depo.jpg
+    - assets/ropa/zap1.jpg
+    - assets/ropa/zap2.jpg
+    - assets/ropa/zap3.jpg
+
+  # ------------------ LOCAL FONTS ------------------
+  fonts:
     - family: Poppins
       fonts:
         - asset: assets/fonts/Poppins-Light.ttf
