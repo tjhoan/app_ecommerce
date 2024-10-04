@@ -24,20 +24,22 @@ class ProductDetailsScreen extends StatefulWidget {
 }
 
 class ProductDetailsScreenState extends State<ProductDetailsScreen> {
-  // Lista de imágenes para el carrusel de zapatos
   final List<String> shoeImages = [
     'assets/ropa/zap1.jpg',
     'assets/ropa/zap2.jpg',
     'assets/ropa/zap3.jpg',
   ];
 
-  int _currentImageIndex = 0; // Índice para rastrear la imagen seleccionada
-  late PageController _pageController; // Controlador para la imagen principal
+  int _currentImageIndex = 0;
+  late CarouselSliderController? _carouselController; // Usar CarouselSliderController directamente
+  int _quantity = 0;
+  String? selectedSize;
+  final List<String> tallaProducto = ['28', '29', '30', '31', '32', '33', '34', '35', '36', '37', '38', '39', '40'];
 
   @override
   void initState() {
     super.initState();
-    _pageController = PageController(); // Inicializar el controlador de la página
+    _carouselController = CarouselSliderController(); // Inicializar el controlador sin casting
   }
 
   @override
@@ -47,17 +49,9 @@ class ProductDetailsScreenState extends State<ProductDetailsScreen> {
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () {
-            Navigator.pop(context); // Volver a la pantalla anterior
+            Navigator.pop(context);
           },
         ),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.favorite_border),
-            onPressed: () {
-              // Lógica para agregar a la lista de deseos
-            },
-          ),
-        ],
       ),
       body: SingleChildScrollView(
         child: Padding(
@@ -65,48 +59,39 @@ class ProductDetailsScreenState extends State<ProductDetailsScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // Imagen principal del producto
               Center(
                 child: Column(
                   children: [
-                    SizedBox(
-                      height: 200,
-                      child: PageView.builder(
-                        controller: _pageController,
-                        onPageChanged: (index) {
+                    CarouselSlider(
+                      carouselController: _carouselController, // Usar CarouselController
+                      options: CarouselOptions(
+                        height: 200,
+                        enlargeCenterPage: true,
+                        autoPlay: true,
+                        autoPlayInterval: const Duration(seconds: 3),
+                        onPageChanged: (index, reason) {
                           setState(() {
-                            _currentImageIndex = index; // Actualizar el índice actual
+                            _currentImageIndex = index;
                           });
                         },
-                        itemCount: shoeImages.length,
-                        itemBuilder: (context, index) {
-                          return Image.asset(
-                            shoeImages[index],
-                            fit: BoxFit.cover,
-                          );
-                        },
                       ),
+                      items: shoeImages.map((image) {
+                        return Image.asset(
+                          image,
+                          fit: BoxFit.cover,
+                          width: double.infinity,
+                        );
+                      }).toList(),
                     ),
                     const SizedBox(height: 10),
-                    // Carrusel de miniaturas de los zapatos
-                    CarouselSlider(
-                      options: CarouselOptions(
-                        height: 80,
-                        enableInfiniteScroll: false,
-                        autoPlay: false,
-                        enlargeCenterPage: true,
-                        viewportFraction: 0.3, // Para mostrar más de una miniatura
-                      ),
-                      items: shoeImages.asMap().entries.map((entry) {
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: shoeImages.asMap().entries.map((entry) {
                         int index = entry.key;
-                        String item = entry.value;
+                        String image = entry.value;
                         return GestureDetector(
                           onTap: () {
-                            // Cambiar a la imagen seleccionada
-                            setState(() {
-                              _currentImageIndex = index;
-                              _pageController.jumpToPage(index);
-                            });
+                            _carouselController?.animateToPage(index); // Navegar entre las páginas del carrusel
                           },
                           child: Container(
                             margin: const EdgeInsets.symmetric(horizontal: 8.0),
@@ -120,7 +105,7 @@ class ProductDetailsScreenState extends State<ProductDetailsScreen> {
                             child: ClipRRect(
                               borderRadius: BorderRadius.circular(8.0),
                               child: Image.asset(
-                                item,
+                                image,
                                 fit: BoxFit.cover,
                                 width: 60,
                               ),
@@ -132,28 +117,7 @@ class ProductDetailsScreenState extends State<ProductDetailsScreen> {
                   ],
                 ),
               ),
-              const SizedBox(height: 20),
-              // Rating y botón de compartir
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  const Row(
-                    children: [
-                      Icon(Icons.star, color: Colors.amber, size: 16),
-                      SizedBox(width: 4),
-                      Text('5.0 (199)', style: TextStyle(fontSize: 12)),
-                    ],
-                  ),
-                  IconButton(
-                    icon: const Icon(Icons.share),
-                    onPressed: () {
-                      // Lógica para compartir el producto
-                    },
-                  ),
-                ],
-              ),
-              const SizedBox(height: 10),
-              // Precios
+              const SizedBox(height: 30),
               Row(
                 children: [
                   Text(
@@ -164,38 +128,52 @@ class ProductDetailsScreenState extends State<ProductDetailsScreen> {
                     ),
                   ),
                   const SizedBox(width: 10),
-                  Text(
-                    '\$${widget.oldPrice}',
-                    style: const TextStyle(
-                      fontSize: 16,
-                      color: Colors.grey,
-                      decoration: TextDecoration.lineThrough,
-                    ),
-                  ),
                 ],
               ),
               const SizedBox(height: 10),
-              // Información del producto
               Text(
                 widget.productName,
                 style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
               ),
               const Text('Stock: In Stock', style: TextStyle(color: Colors.green)),
               const SizedBox(height: 10),
+
+              // Selección de talla en cuadros con desplazamiento horizontal
+              const Text(
+                'Talla: ',
+                style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+              ),
+              const SizedBox(height: 10),
+              SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                child: Row(
+                  children: tallaProducto.map((size) {
+                    return Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 4.0),
+                      child: ChoiceChip(
+                        label: Text(size),
+                        selected: selectedSize == size,
+                        onSelected: (bool selected) {
+                          setState(() {
+                            selectedSize = selected ? size : null;
+                          });
+                        },
+                      ),
+                    );
+                  }).toList(),
+                ),
+              ),
+              const SizedBox(height: 20),
               Text('Marca: ${widget.brand}', style: const TextStyle(fontSize: 14)),
               const SizedBox(height: 20),
-              // Botón de Checkout
               ElevatedButton(
-                onPressed: () {
-                  // Lógica de Checkout
-                },
+                onPressed: () {},
                 style: ElevatedButton.styleFrom(
                   minimumSize: const Size(double.infinity, 50),
                 ),
                 child: const Text('Checkout'),
               ),
               const SizedBox(height: 20),
-              // Descripción del producto
               const Text(
                 'Descripción',
                 style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
@@ -220,22 +198,24 @@ class ProductDetailsScreenState extends State<ProductDetailsScreen> {
                   IconButton(
                     icon: const Icon(Icons.remove_circle_outline),
                     onPressed: () {
-                      // Disminuir cantidad
+                      setState(() {
+                        if (_quantity > 0) _quantity--;
+                      });
                     },
                   ),
-                  const Text('0'),
+                  Text('$_quantity'),
                   IconButton(
                     icon: const Icon(Icons.add_circle_outline),
                     onPressed: () {
-                      // Aumentar cantidad
+                      setState(() {
+                        _quantity++;
+                      });
                     },
                   ),
                 ],
               ),
               ElevatedButton(
-                onPressed: () {
-                  // Agregar al carrito
-                },
+                onPressed: () {},
                 child: const Text('Add to Bag'),
               ),
             ],
