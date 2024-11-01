@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
-import 'package:project_s6_mobile/screens/cart_sreen.dart';
+import 'package:project_s6_mobile/screens/cart_screen.dart';
 import 'package:project_s6_mobile/screens/product_details_screen.dart';
 
 class HomeScreen extends StatelessWidget {

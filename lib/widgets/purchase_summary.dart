@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:project_s6_mobile/screens/payment_success_screen.dart';
 import 'package:project_s6_mobile/widgets/show_payment_methods.dart';
 
 class PurchaseSummary extends StatelessWidget {
@@ -38,14 +39,17 @@ class PurchaseSummary extends StatelessWidget {
           const Divider(),
           _buildSummaryRow('Total del Pedido', orderTotal, isTotal: true),
           const SizedBox(height: 16),
-          _buildPaymentMethod(context), // Aquí pasamos el contexto
+          _buildPaymentMethod(context),
           const SizedBox(height: 16),
           _buildShippingAddress(),
           const SizedBox(height: 16),
           ElevatedButton(
             onPressed: () {
-              // Lógica para finalizar la compra
-              Navigator.pop(context);
+              // Navegar a la pantalla de confirmación de pago
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const PaymentSuccessScreen()),
+              );
             },
             style: ElevatedButton.styleFrom(
               backgroundColor: Colors.blue,
@@ -95,7 +99,7 @@ class PurchaseSummary extends StatelessWidget {
       contentPadding: EdgeInsets.zero,
       leading: const Icon(Icons.location_on, color: Colors.blue),
       title: const Text('Dirección de Envío'),
-      subtitle: const Text('Coding with T\n+923178059528\n82311 Timmy Coves, South Liana, Maine, 87547, USA'),
+      subtitle: const Text('+314583098\nCra 10 # 20-30\nZarazal, Valle del Cauca'),
       trailing: TextButton(
         onPressed: () {
           // Agregar acción para cambiar la dirección
