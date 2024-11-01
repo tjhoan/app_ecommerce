@@ -21,7 +21,7 @@ class AdminPanel extends StatelessWidget {
           children: [
             const DrawerHeader(
               decoration: BoxDecoration(
-                color: Colors.blueGrey,
+                color: Colors.blueGrey, 
               ),
               child: Text('Admin Panel', style: TextStyle(color: Colors.white, fontSize: 24)),
             ),

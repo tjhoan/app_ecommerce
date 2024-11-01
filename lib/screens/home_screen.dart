@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:carousel_slider/carousel_slider.dart'; // Importación del slider
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
-import 'package:project_s6_mobile/screens/product_details_screen.dart'; 
+import 'package:project_s6_mobile/screens/cart_sreen.dart';
+import 'package:project_s6_mobile/screens/product_details_screen.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -12,9 +13,12 @@ class HomeScreen extends StatelessWidget {
       appBar: AppBar(
         actions: [
           IconButton(
-            icon: const Icon(Icons.lock),
+            icon: const Icon(Icons.shopping_cart),
             onPressed: () {
-              // Lógica para el icono de perfil
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const CartScreen()), // Navegar a HomeScreen
+              );
             },
           ),
         ],
@@ -185,7 +189,8 @@ class HomeScreen extends StatelessWidget {
         'brand': 'Nike',
         'old_price': 600.0,
         'new_price': 400.0,
-        'description': 'This is a Product description for Nike Air Max. There are more things that can be added but I am just putting a placeholder text here for now.',
+        'description':
+            'This is a Product description for Nike Air Max. There are more things that can be added but I am just putting a placeholder text here for now.',
       },
       {
         'image': 'assets/ropa/camisa.jpg',

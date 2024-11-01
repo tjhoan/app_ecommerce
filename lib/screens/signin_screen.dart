@@ -47,7 +47,6 @@ class SignInScreen extends StatelessWidget {
               CustomButton(
                 text: 'Iniciar Sesión',
                 onPressed: () {
-                  // Navegar a la pantalla de inicio (HomeScreen) al iniciar sesión
                   Navigator.push(
                     context,
                     MaterialPageRoute(builder: (context) => const HomeScreen()), // Navegar a HomeScreen
@@ -59,7 +58,6 @@ class SignInScreen extends StatelessWidget {
               // Botón de Crear Cuenta
               OutlinedButton(
                 onPressed: () {
-                  // Navegar a la pantalla de registro (SignUpScreen)
                   Navigator.push(
                     context,
                     MaterialPageRoute(builder: (context) => const SignUpScreen()), // Navegar a SignUpScreen
