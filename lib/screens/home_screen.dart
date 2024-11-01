@@ -34,17 +34,17 @@ class HomeScreen extends StatelessWidget {
                 'Juan Torres',
                 style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
               ),
+              // const SizedBox(height: 5),
+              // TextField(
+              //   decoration: InputDecoration(
+              //     hintText: 'Buscar en la tienda',
+              //     prefixIcon: const Icon(Icons.search),
+              //     border: OutlineInputBorder(
+              //       borderRadius: BorderRadius.circular(10),
+              //     ),
+              //   ),
+              // ),
               const SizedBox(height: 10),
-              TextField(
-                decoration: InputDecoration(
-                  hintText: 'Buscar en la tienda',
-                  prefixIcon: const Icon(Icons.search),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                ),
-              ),
-              const SizedBox(height: 20),
 
               // Carrusel de categorías populares
               const Text(
