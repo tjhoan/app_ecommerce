@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:project_s6_mobile/widgets/show_payment_methods.dart';
 
 class PurchaseSummary extends StatelessWidget {
   final double subtotal;
@@ -37,13 +38,13 @@ class PurchaseSummary extends StatelessWidget {
           const Divider(),
           _buildSummaryRow('Total del Pedido', orderTotal, isTotal: true),
           const SizedBox(height: 16),
-          _buildPaymentMethod(),
+          _buildPaymentMethod(context), // Aquí pasamos el contexto
           const SizedBox(height: 16),
           _buildShippingAddress(),
           const SizedBox(height: 16),
           ElevatedButton(
             onPressed: () {
-              // Aquí puedes agregar la lógica para finalizar la compra
+              // Lógica para finalizar la compra
               Navigator.pop(context);
             },
             style: ElevatedButton.styleFrom(
@@ -67,13 +68,14 @@ class PurchaseSummary extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Text(label, style: TextStyle(fontSize: 16, fontWeight: isTotal ? FontWeight.bold : FontWeight.normal)),
-          Text('\$${value.toStringAsFixed(2)}', style: TextStyle(fontSize: 16, fontWeight: isTotal ? FontWeight.bold : FontWeight.normal)),
+          Text('\$${value.toStringAsFixed(2)}',
+              style: TextStyle(fontSize: 16, fontWeight: isTotal ? FontWeight.bold : FontWeight.normal)),
         ],
       ),
     );
   }
 
-  Widget _buildPaymentMethod() {
+  Widget _buildPaymentMethod(BuildContext context) {
     return ListTile(
       contentPadding: EdgeInsets.zero,
       leading: const Icon(Icons.payment, color: Colors.blue),
@@ -81,7 +83,7 @@ class PurchaseSummary extends StatelessWidget {
       subtitle: const Text('PayPal'),
       trailing: TextButton(
         onPressed: () {
-          // Agregar acción para cambiar el método de pago
+          showPaymentMethods(context);
         },
         child: const Text('Cambiar', style: TextStyle(color: Colors.blue)),
       ),
