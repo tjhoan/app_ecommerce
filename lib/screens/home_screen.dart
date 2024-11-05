@@ -1,122 +1,117 @@
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
+import 'package:project_s6_mobile/screens/account_screen.dart';
 import 'package:project_s6_mobile/screens/cart_screen.dart';
 import 'package:project_s6_mobile/screens/product_details_screen.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
+
+  @override
+  HomeScreenState createState() => HomeScreenState();
+}
+
+class HomeScreenState extends State<HomeScreen> {
+  int _currentIndex = 0;
+
+  final List<Widget> _screens = [
+    const HomeContentScreen(), // Pantalla de inicio con contenido
+    const Center(child: Text('Tienda')),
+    const AccountScreen(),
+  ];
+
+  void _onTap(int index) {
+    setState(() {
+      _currentIndex = index;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.shopping_cart),
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => const CartScreen()), // Navegar a HomeScreen
-              );
-            },
-          ),
-        ],
-      ),
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              // Nombre de usuario y barra de búsqueda
-              const Text(
-                'Juan Torres',
-                style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-              ),
-              // const SizedBox(height: 5),
-              // TextField(
-              //   decoration: InputDecoration(
-              //     hintText: 'Buscar en la tienda',
-              //     prefixIcon: const Icon(Icons.search),
-              //     border: OutlineInputBorder(
-              //       borderRadius: BorderRadius.circular(10),
-              //     ),
-              //   ),
-              // ),
-              const SizedBox(height: 10),
+      appBar: _buildAppBar(),
+      body: _screens[_currentIndex], // Cambia el contenido dinámicamente
+      bottomNavigationBar: _buildBottomNavigationBar(),
+    );
+  }
 
-              // Carrusel de categorías populares
-              const Text(
-                'Categorías populares',
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-              ),
-              const SizedBox(height: 10),
-              _buildCategoryCarousel(),
-
-              const SizedBox(height: 20),
-
-              // Carrusel de productos destacados (sneakers)
-              const Text(
-                'Producto destacado',
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-              ),
-              const SizedBox(height: 10),
-              _buildFeaturedProductCarousel(),
-
-              const SizedBox(height: 20),
-
-              // Carrusel de productos populares
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  const Text(
-                    'Productos populares',
-                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                  ),
-                  GestureDetector(
-                    onTap: () {
-                      // Lógica para ver todos los productos
-                    },
-                    child: const Text(
-                      'Ver todos',
-                      style: TextStyle(color: Colors.blue),
-                    ),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 10),
-              _buildPopularProductsCarousel(),
-            ],
-          ),
+  AppBar _buildAppBar() {
+    return AppBar(
+      actions: [
+        IconButton(
+          icon: const Icon(Icons.shopping_cart),
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => const CartScreen()),
+            );
+          },
         ),
-      ),
+      ],
+    );
+  }
 
-      // Barra de navegación inferior
-      bottomNavigationBar: BottomNavigationBar(
-        items: const [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: 'Inicio',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.store),
-            label: 'Tienda',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.person),
-            label: 'Perfil',
-          ),
-        ],
-        currentIndex: 0, // Controla cuál está seleccionado
-        onTap: (index) {
-          // Lógica para cambiar de pantalla
-        },
+  BottomNavigationBar _buildBottomNavigationBar() {
+    return BottomNavigationBar(
+      items: const [
+        BottomNavigationBarItem(
+          icon: Icon(Icons.home),
+          label: 'Inicio',
+        ),
+        BottomNavigationBarItem(
+          icon: Icon(Icons.store),
+          label: 'Tienda',
+        ),
+        BottomNavigationBarItem(
+          icon: Icon(Icons.person),
+          label: 'Perfil',
+        ),
+      ],
+      currentIndex: _currentIndex,
+      onTap: _onTap,
+    );
+  }
+}
+
+// Contenido de la pantalla de inicio, para separar la lógica en un widget propio
+class HomeContentScreen extends StatelessWidget {
+  const HomeContentScreen({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return SingleChildScrollView(
+      child: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const Text(
+              'Categorías populares',
+              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+            ),
+            const SizedBox(height: 10),
+            _buildCategoryCarousel(),
+            const SizedBox(height: 20),
+            const Text(
+              'Producto destacado',
+              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+            ),
+            const SizedBox(height: 10),
+            _buildFeaturedProductCarousel(),
+            const SizedBox(height: 20),
+            const Text(
+              'Productos populares',
+              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+            ),
+            const SizedBox(height: 10),
+            _buildPopularProductsCarousel(),
+          ],
+        ),
       ),
     );
   }
 
-  // Carrusel de categorías populares
   Widget _buildCategoryCarousel() {
     final categories = [
       {'icon': MdiIcons.necklace, 'label': 'Cadenas'},
@@ -152,7 +147,6 @@ class HomeScreen extends StatelessWidget {
     );
   }
 
-  // Carrusel de producto destacado (sneakers)
   Widget _buildFeaturedProductCarousel() {
     final List<String> imgList = [
       'assets/ropa/zap1.jpg',
@@ -179,7 +173,6 @@ class HomeScreen extends StatelessWidget {
     );
   }
 
-  // Carrusel de productos populares
   Widget _buildPopularProductsCarousel() {
     final List<Map<String, dynamic>> products = [
       {
@@ -189,8 +182,7 @@ class HomeScreen extends StatelessWidget {
         'brand': 'Nike',
         'old_price': 600.0,
         'new_price': 400.0,
-        'description':
-            'This is a Product description for Nike Air Max. There are more things that can be added but I am just putting a placeholder text here for now.',
+        'description': 'This is a Product description for Nike Air Max. Placeholder text for now.',
       },
       {
         'image': 'assets/ropa/camisa.jpg',
@@ -199,7 +191,7 @@ class HomeScreen extends StatelessWidget {
         'brand': 'ZARA',
         'old_price': 35.0,
         'new_price': 30.0,
-        'description': 'This is a description for a Blue T-shirt by ZARA.',
+        'description': 'Description for a Blue T-shirt by ZARA.',
       },
     ];
 
@@ -213,7 +205,6 @@ class HomeScreen extends StatelessWidget {
 
           return GestureDetector(
             onTap: () {
-              // Navegar a la pantalla de detalles del producto
               Navigator.push(
                 context,
                 MaterialPageRoute(
@@ -231,7 +222,7 @@ class HomeScreen extends StatelessWidget {
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 8.0),
               child: Container(
-                width: 180, // Ancho de la tarjeta
+                width: 180,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(10),
                   color: Colors.white,
@@ -322,7 +313,6 @@ class HomeScreen extends StatelessWidget {
                       ),
                     ),
                     const Spacer(),
-                    // Botón para agregar al carrito
                     Align(
                       alignment: Alignment.bottomRight,
                       child: Container(
