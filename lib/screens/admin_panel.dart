@@ -29,24 +29,20 @@ class AdminPanel extends StatelessWidget {
               leading: const Icon(Icons.home),
               title: const Text('Home'),
               onTap: () {
-                // Handle dashboard navigation
               },
             ),
             ListTile(
               leading: const Icon(Icons.checkroom),
               title: const Text('Team'),
               onTap: () {
-                // Handle team navigation
               },
             ),
             ListTile(
               leading: const Icon(Icons.list),
               title: const Text('Marcas'),
               onTap: () {
-                // Handle chat navigation
               },
             ),
-            // Add more menu items here
           ],
         ),
       ),

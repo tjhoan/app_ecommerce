@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:project_s6_mobile/screens/payment_success_screen.dart';
+import 'package:project_s6_mobile/widgets/show_address_form.dart';
 import 'package:project_s6_mobile/widgets/show_payment_methods.dart';
 
 class PurchaseSummary extends StatelessWidget {
@@ -41,7 +42,7 @@ class PurchaseSummary extends StatelessWidget {
           const SizedBox(height: 16),
           _buildPaymentMethod(context),
           const SizedBox(height: 16),
-          _buildShippingAddress(),
+          _buildShippingAddress(context),
           const SizedBox(height: 16),
           ElevatedButton(
             onPressed: () {
@@ -94,7 +95,7 @@ class PurchaseSummary extends StatelessWidget {
     );
   }
 
-  Widget _buildShippingAddress() {
+  Widget _buildShippingAddress(BuildContext context) {
     return ListTile(
       contentPadding: EdgeInsets.zero,
       leading: const Icon(Icons.location_on, color: Colors.blue),
@@ -102,7 +103,7 @@ class PurchaseSummary extends StatelessWidget {
       subtitle: const Text('+314583098\nCra 10 # 20-30\nZarazal, Valle del Cauca'),
       trailing: TextButton(
         onPressed: () {
-          // Agregar acción para cambiar la dirección
+          showAddressForm(context);
         },
         child: const Text('Cambiar', style: TextStyle(color: Colors.blue)),
       ),

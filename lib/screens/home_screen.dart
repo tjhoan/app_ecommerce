@@ -16,7 +16,7 @@ class HomeScreenState extends State<HomeScreen> {
   int _currentIndex = 0;
 
   final List<Widget> _screens = [
-    const HomeContentScreen(), // Pantalla de inicio con contenido
+    const HomeContentScreen(),
     const Center(child: Text('Tienda')),
     const AccountScreen(),
   ];
@@ -31,7 +31,7 @@ class HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: _buildAppBar(),
-      body: _screens[_currentIndex], // Cambia el contenido dinámicamente
+      body: _screens[_currentIndex],
       bottomNavigationBar: _buildBottomNavigationBar(),
     );
   }
@@ -74,7 +74,7 @@ class HomeScreenState extends State<HomeScreen> {
   }
 }
 
-// Contenido de la pantalla de inicio, para separar la lógica en un widget propio
+// Contenido de la pantalla de inicio
 class HomeContentScreen extends StatelessWidget {
   const HomeContentScreen({super.key});
 

@@ -31,7 +31,7 @@ class ProductDetailsScreenState extends State<ProductDetailsScreen> {
   ];
 
   int _currentImageIndex = 0;
-  late CarouselSliderController? _carouselController; // Usar CarouselSliderController directamente
+  late CarouselSliderController? _carouselController;
   int _quantity = 0;
   String? selectedSize;
   final List<String> tallaProducto = ['28', '29', '30', '31', '32', '33', '34', '35', '36', '37', '38', '39', '40'];
@@ -39,7 +39,7 @@ class ProductDetailsScreenState extends State<ProductDetailsScreen> {
   @override
   void initState() {
     super.initState();
-    _carouselController = CarouselSliderController(); // Inicializar el controlador sin casting
+    _carouselController = CarouselSliderController();
   }
 
   @override
@@ -63,7 +63,7 @@ class ProductDetailsScreenState extends State<ProductDetailsScreen> {
                 child: Column(
                   children: [
                     CarouselSlider(
-                      carouselController: _carouselController, // Usar CarouselController
+                      carouselController: _carouselController,
                       options: CarouselOptions(
                         height: 200,
                         enlargeCenterPage: true,
@@ -91,7 +91,7 @@ class ProductDetailsScreenState extends State<ProductDetailsScreen> {
                         String image = entry.value;
                         return GestureDetector(
                           onTap: () {
-                            _carouselController?.animateToPage(index); // Navegar entre las páginas del carrusel
+                            _carouselController?.animateToPage(index);
                           },
                           child: Container(
                             margin: const EdgeInsets.symmetric(horizontal: 8.0),
