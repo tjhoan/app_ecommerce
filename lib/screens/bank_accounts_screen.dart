@@ -1,13 +1,17 @@
+// ignore_for_file: library_private_types_in_public_api, avoid_print
+
 import 'package:flutter/material.dart';
 import '../widgets/add_bank_account.dart';
 
 class BankAccountsScreen extends StatefulWidget {
+  const BankAccountsScreen({super.key});
+
   @override
   _BankAccountsScreenState createState() => _BankAccountsScreenState();
 }
 
 class _BankAccountsScreenState extends State<BankAccountsScreen> {
-  int _selectedIndex = 0; // Index para el radio seleccionado
+  int _selectedIndex = 0;
 
   // Lista de cuentas de ejemplo actualizada
   final List<Map<String, String>> _bankAccounts = [
@@ -57,7 +61,7 @@ class _BankAccountsScreenState extends State<BankAccountsScreen> {
                         _selectedIndex = value!;
                       });
                     },
-                    activeColor: const Color.fromARGB(255, 15, 119, 246), // Color del círculo seleccionado
+                    activeColor: const Color.fromARGB(255, 15, 119, 246),
                   ),
                   title: Text(
                     _bankAccounts[index]['nameBank']!,
@@ -81,14 +85,14 @@ class _BankAccountsScreenState extends State<BankAccountsScreen> {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => AddBankAccountScreen(),
+                      builder: (context) => const AddBankAccountScreen(),
                     ),
                   );
                   // Acción para añadir una nueva cuenta
                   print("Añadir nueva cuenta presionado");
                 },
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: const Color.fromARGB(255, 15, 119, 246), // Color de fondo del botón
+                  backgroundColor: const Color.fromARGB(255, 15, 119, 246),
                   padding: const EdgeInsets.symmetric(vertical: 16.0),
                 ),
                 child: const Text(

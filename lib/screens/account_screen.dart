@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'bank_accounts.dart';
+import 'bank_accounts_screen.dart';
 
 class AccountScreen extends StatelessWidget {
   const AccountScreen({super.key});
@@ -16,7 +16,6 @@ class AccountScreen extends StatelessWidget {
             color: const Color.fromARGB(255, 56, 90, 242),
             child: Stack(
               children: [
-                // Título "Account" en la parte superior
                 const Positioned(
                   top: 25,
                   left: 20,
@@ -55,7 +54,7 @@ class AccountScreen extends StatelessWidget {
                   ),
                 ),
 
-                // Información de usuario con imagen, textos y botón de editar
+                // Información de usuario
                 Positioned(
                   top: 80,
                   left: 20,
@@ -100,7 +99,7 @@ class AccountScreen extends StatelessWidget {
               ],
             ),
           ),
-          // Sección de Account Settings con esquinas redondeadas
+          // Sección de Account Settings
           Expanded(
             child: Container(
               decoration: const BoxDecoration(
@@ -143,7 +142,7 @@ class AccountScreen extends StatelessWidget {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => BankAccountsScreen(),
+                          builder: (context) => const BankAccountsScreen(),
                         ),
                       );
                     },

@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously, avoid_print
+
 import 'package:flutter/material.dart';
 import '../services/api_service.dart';
 import '../models/customer.dart';

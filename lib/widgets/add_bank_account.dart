@@ -1,6 +1,10 @@
+// ignore_for_file: avoid_print
+
 import 'package:flutter/material.dart';
 
 class AddBankAccountScreen extends StatelessWidget {
+  const AddBankAccountScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -32,9 +36,9 @@ class AddBankAccountScreen extends StatelessWidget {
               decoration: InputDecoration(
                 labelText: 'Banco',
                 labelStyle: const TextStyle(fontWeight: FontWeight.bold),
-                prefixIcon: const Icon(Icons.account_balance), // Ícono de banco
+                prefixIcon: const Icon(Icons.account_balance),
                 border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(12.0), // Borde redondeado
+                  borderRadius: BorderRadius.circular(12.0),
                 ),
               ),
             ),
@@ -43,9 +47,9 @@ class AddBankAccountScreen extends StatelessWidget {
               decoration: InputDecoration(
                 labelText: 'Tipo de cuenta',
                 labelStyle: const TextStyle(fontWeight: FontWeight.bold),
-                prefixIcon: const Icon(Icons.account_balance_wallet), // Ícono de cuenta bancaria
+                prefixIcon: const Icon(Icons.account_balance_wallet),
                 border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(12.0), // Borde redondeado
+                  borderRadius: BorderRadius.circular(12.0),
                 ),
               ),
             ),
@@ -54,9 +58,9 @@ class AddBankAccountScreen extends StatelessWidget {
               decoration: InputDecoration(
                 labelText: 'Número de cuenta',
                 labelStyle: const TextStyle(fontWeight: FontWeight.bold),
-                prefixIcon: const Icon(Icons.numbers), // Ícono de número de cuenta
+                prefixIcon: const Icon(Icons.numbers),
                 border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(12.0), // Borde redondeado
+                  borderRadius: BorderRadius.circular(12.0),
                 ),
               ),
             ),
@@ -65,7 +69,6 @@ class AddBankAccountScreen extends StatelessWidget {
               width: double.infinity,
               child: ElevatedButton(
                 onPressed: () {
-                  // Acción para guardar la nueva cuenta
                   print("Guardar cuenta presionado");
                 },
                 style: ElevatedButton.styleFrom(
