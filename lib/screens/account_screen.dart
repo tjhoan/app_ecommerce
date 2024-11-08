@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'bank_accounts.dart';
 
 class AccountScreen extends StatelessWidget {
   const AccountScreen({super.key});
@@ -138,7 +139,14 @@ class AccountScreen extends StatelessWidget {
                   ListTile(
                     leading: const Icon(Icons.account_balance, color: Color.fromARGB(255, 15, 119, 246)),
                     title: const Text('Cuenta Bancaria', style: TextStyle(fontWeight: FontWeight.bold)),
-                    onTap: () {},
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => BankAccountsScreen(),
+                        ),
+                      );
+                    },
                   ),
                 ],
               ),
