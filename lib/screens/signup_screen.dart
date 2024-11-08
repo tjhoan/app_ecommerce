@@ -1,8 +1,7 @@
-// ignore_for_file: use_build_context_synchronously, avoid_print
-
+// lib/screens/signup_screen.dart
 import 'package:flutter/material.dart';
 import '../widgets/input_field.dart';
-import '../services/api_service.dart';
+import '../controllers/auth_controller.dart';
 
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({super.key});
@@ -12,7 +11,7 @@ class SignUpScreen extends StatefulWidget {
 }
 
 class SignUpScreenState extends State<SignUpScreen> {
-  final ApiService _apiService = ApiService();
+  final AuthController _authController = AuthController();
   final TextEditingController _firstNameController = TextEditingController();
   final TextEditingController _lastNameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
@@ -22,83 +21,15 @@ class SignUpScreenState extends State<SignUpScreen> {
 
   final _formKey = GlobalKey<FormState>();
 
-  Future<void> _register() async {
-    // Validar los datos antes de proceder
+  void _register() async {
     if (_formKey.currentState?.validate() ?? false) {
-      print('Datos ingresados:');
-      print('Nombre: ${_firstNameController.text}');
-      print('Apellido: ${_lastNameController.text}');
-      print('Correo Electrónico: ${_emailController.text}');
-      print('Contraseña: ${_passwordController.text}');
-      
-      try {
-        final customer = await _apiService.registerCustomer(
-          _firstNameController.text,
-          _lastNameController.text,
-          _emailController.text,
-          _passwordController.text,
-        );
-        if (customer != null) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Row(
-                children: [
-                  const Icon(Icons.check_circle, color: Colors.white),
-                  const SizedBox(width: 10),
-                  Expanded(
-                    child: Text(
-                      'Usuario registrado con éxito: ${customer.email}',
-                      style: const TextStyle(color: Colors.white),
-                    ),
-                  ),
-                ],
-              ),
-              backgroundColor: Colors.green,
-              behavior: SnackBarBehavior.floating,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(10),
-              ),
-              duration: const Duration(seconds: 3),
-            ),
-          );
-        }
-      } catch (error) {
-        String errorMessage =
-            'Ocurrió un error inesperado. Por favor, inténtalo de nuevo.';
-
-        if (error is FormatException) {
-          errorMessage =
-              'Error de formato en la respuesta. Revisa la conexión o contacta al soporte.';
-        } else {
-          errorMessage = error
-              .toString();
-        }
-
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Row(
-              children: [
-                const Icon(Icons.error, color: Colors.white),
-                const SizedBox(width: 10),
-                Expanded(
-                  child: Text(
-                    errorMessage,
-                    style: const TextStyle(color: Colors.white),
-                  ),
-                ),
-              ],
-            ),
-            backgroundColor: Colors.red,
-            behavior: SnackBarBehavior.floating,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(10),
-            ),
-            duration: const Duration(seconds: 3),
-          ),
-        );
-
-        print('Error: $error');
-      }
+      await _authController.registerUser(
+        firstName: _firstNameController.text,
+        lastName: _lastNameController.text,
+        email: _emailController.text,
+        password: _passwordController.text,
+        context: context,
+      );
     }
   }
 
