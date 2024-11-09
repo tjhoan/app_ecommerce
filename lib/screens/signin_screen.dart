@@ -1,11 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:project_s6_mobile/screens/home_screen.dart';
 import 'package:project_s6_mobile/screens/signup_screen.dart';
 import '../widgets/input_field.dart';
 import '../widgets/custom_button.dart';
+import '../controllers/auth_login_controller.dart';
 
 class SignInScreen extends StatelessWidget {
-  const SignInScreen({super.key});
+  SignInScreen({super.key});
+
+  final TextEditingController emailController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
+  final AuthLoginController authLoginController = AuthLoginController();
 
   @override
   Widget build(BuildContext context) {
@@ -23,7 +27,8 @@ class SignInScreen extends StatelessWidget {
                     SizedBox(height: 10),
                     Text(
                       'Bienvenido de nuevo',
-                      style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
+                      style:
+                          TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
                     )
                   ],
                 ),
@@ -31,12 +36,14 @@ class SignInScreen extends StatelessWidget {
               const SizedBox(height: 30),
 
               // Input fields
-              const InputField(
+              InputField(
+                controller: emailController,
                 hintText: 'Correo Electrónico',
                 icon: Icons.email,
               ),
               const SizedBox(height: 10),
-              const InputField(
+              InputField(
+                controller: passwordController,
                 hintText: 'Contraseña',
                 icon: Icons.lock,
                 isPassword: true,
@@ -46,10 +53,11 @@ class SignInScreen extends StatelessWidget {
               // Botón de Iniciar Sesión
               CustomButton(
                 text: 'Iniciar Sesión',
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => const HomeScreen()), // Navegar a HomeScreen
+                onPressed: () async {
+                  await authLoginController.loginUser(
+                    email: emailController.text,
+                    password: passwordController.text,
+                    context: context,
                   );
                 },
               ),
@@ -60,7 +68,9 @@ class SignInScreen extends StatelessWidget {
                 onPressed: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => const SignUpScreen()), // Navegar a SignUpScreen
+                    MaterialPageRoute(
+                        builder: (context) =>
+                            const SignUpScreen()), // Navegar a SignUpScreen
                   );
                 },
                 style: OutlinedButton.styleFrom(

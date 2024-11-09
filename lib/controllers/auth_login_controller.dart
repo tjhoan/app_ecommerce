@@ -1,27 +1,21 @@
 // ignore_for_file: use_build_context_synchronously, avoid_print
 
 import 'package:flutter/material.dart';
+import 'package:project_s6_mobile/screens/home_screen.dart';
 import '../services/api_service.dart';
 import '../models/customer.dart';
 
-class AuthController {
+class AuthLoginController {
   final ApiService _apiService = ApiService();
 
-  Future<Customer?> registerUser({
-    required String firstName,
-    required String lastName,
+  Future<Customer?> loginUser({
     required String email,
     required String password,
     required BuildContext context,
   }) async {
     try {
-      final customer = await _apiService.registerCustomer(
-        firstName,
-        lastName,
-        email,
-        password,
-      );
-      
+      final customer = await _apiService.loginCustomer(email, password);
+
       if (customer != null) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
@@ -31,7 +25,7 @@ class AuthController {
                 const SizedBox(width: 10),
                 Expanded(
                   child: Text(
-                    'Usuario registrado con éxito: ${customer.email}',
+                    'Bienvenido de nuevo, ${customer.email}',
                     style: const TextStyle(color: Colors.white),
                   ),
                 ),
@@ -45,14 +39,20 @@ class AuthController {
             duration: const Duration(seconds: 3),
           ),
         );
+
+        // Redirigir a la pantalla de inicio o HomeScreen
+        Navigator.pushReplacement(context,
+            MaterialPageRoute(builder: (context) => const HomeScreen()));
       }
 
       return customer;
     } catch (error) {
-      String errorMessage = 'Ocurrió un error inesperado. Por favor, inténtalo de nuevo.';
-      
+      String errorMessage =
+          'Ocurrió un error inesperado. Por favor, inténtalo de nuevo.';
+
       if (error is FormatException) {
-        errorMessage = 'Error de formato en la respuesta. Revisa la conexión o contacta al soporte.';
+        errorMessage =
+            'Error de formato en la respuesta. Revisa la conexión o contacta al soporte.';
       } else {
         errorMessage = error.toString();
       }

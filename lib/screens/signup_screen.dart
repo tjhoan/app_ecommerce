@@ -1,7 +1,7 @@
 // lib/screens/signup_screen.dart
 import 'package:flutter/material.dart';
 import '../widgets/input_field.dart';
-import '../controllers/auth_controller.dart';
+import '../controllers/auth_register_controller.dart';
 
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({super.key});
@@ -11,7 +11,8 @@ class SignUpScreen extends StatefulWidget {
 }
 
 class SignUpScreenState extends State<SignUpScreen> {
-  final AuthController _authController = AuthController();
+  final AuthRegisterController _authRegisterController =
+      AuthRegisterController();
   final TextEditingController _firstNameController = TextEditingController();
   final TextEditingController _lastNameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
@@ -23,7 +24,7 @@ class SignUpScreenState extends State<SignUpScreen> {
 
   void _register() async {
     if (_formKey.currentState?.validate() ?? false) {
-      await _authController.registerUser(
+      await _authRegisterController.registerUser(
         firstName: _firstNameController.text,
         lastName: _lastNameController.text,
         email: _emailController.text,
