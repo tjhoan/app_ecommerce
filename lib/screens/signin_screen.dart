@@ -1,5 +1,8 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:flutter/material.dart';
 import 'package:project_s6_mobile/screens/signup_screen.dart';
+import 'package:project_s6_mobile/utils/error_handler.dart';
 import '../widgets/input_field.dart';
 import '../widgets/custom_button.dart';
 import '../controllers/auth_login_controller.dart';
@@ -54,11 +57,17 @@ class SignInScreen extends StatelessWidget {
               CustomButton(
                 text: 'Iniciar Sesión',
                 onPressed: () async {
-                  await authLoginController.loginUser(
+                  final customer = await authLoginController.loginUser(
                     email: emailController.text,
                     password: passwordController.text,
                     context: context,
                   );
+                  if (customer == null) {
+                    ErrorHandler.showErrorMessage(
+                      context,
+                      'Error: No se pudo iniciar sesión. Verifica tus credenciales o intenta de nuevo.',
+                    );
+                  }
                 },
               ),
               const SizedBox(height: 10),

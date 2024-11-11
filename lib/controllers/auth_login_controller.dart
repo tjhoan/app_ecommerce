@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:project_s6_mobile/screens/home_screen.dart';
 import '../services/api_service.dart';
 import '../models/customer.dart';
+import '../utils/error_handler.dart';
 
 class AuthLoginController {
   final ApiService _apiService = ApiService();
@@ -13,65 +14,42 @@ class AuthLoginController {
     required String password,
     required BuildContext context,
   }) async {
+    // Validar si los campos de email y password están vacíos antes de la llamada a la API
+    if (email.isEmpty || password.isEmpty) {
+      ErrorHandler.showErrorMessage(
+        context,
+        'Por favor, ingresa tus credenciales completas.',
+      );
+      return null;
+    }
+
     try {
       final customer = await _apiService.loginCustomer(email, password);
 
-      if (customer != null) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Row(
-              children: [
-                const Icon(Icons.check_circle, color: Colors.white),
-                const SizedBox(width: 10),
-                Expanded(
-                  child: Text(
-                    'Bienvenido de nuevo, ${customer.email}',
-                    style: const TextStyle(color: Colors.white),
-                  ),
-                ),
-              ],
-            ),
-            backgroundColor: Colors.green,
-            behavior: SnackBarBehavior.floating,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(10),
-            ),
-            duration: const Duration(seconds: 3),
-          ),
+      if (customer == null) {
+        ErrorHandler.showErrorMessage(
+          context,
+          'Usuario no encontrado. Verifica tus credenciales.',
         );
-
-        // Redirigir a la pantalla de inicio o HomeScreen
-        Navigator.pushReplacement(context,
-            MaterialPageRoute(builder: (context) => const HomeScreen()));
+        return null;
       }
 
-      return customer;
-    } catch (error) {
-      String errorMessage =
-          'Ocurrió un error inesperado. Por favor, inténtalo de nuevo.';
-
-      if (error is FormatException) {
-        errorMessage =
-            'Error de formato en la respuesta. Revisa la conexión o contacta al soporte.';
-      } else {
-        errorMessage = error.toString();
-      }
-
+      // Si la autenticación fue exitosa, mostrar mensaje de bienvenida y redirigir a HomeScreen
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Row(
             children: [
-              const Icon(Icons.error, color: Colors.white),
+              const Icon(Icons.check_circle, color: Colors.white),
               const SizedBox(width: 10),
               Expanded(
                 child: Text(
-                  errorMessage,
+                  'Bienvenido de nuevo, ${customer.email}',
                   style: const TextStyle(color: Colors.white),
                 ),
               ),
             ],
           ),
-          backgroundColor: Colors.red,
+          backgroundColor: Colors.green,
           behavior: SnackBarBehavior.floating,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(10),
@@ -80,6 +58,14 @@ class AuthLoginController {
         ),
       );
 
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => const HomeScreen()),
+      );
+
+      return customer;
+    } catch (error) {
+      ErrorHandler.showErrorMessage(context, error.toString());
       print('Error: $error');
       return null;
     }
