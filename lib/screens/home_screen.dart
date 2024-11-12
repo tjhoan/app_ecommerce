@@ -39,12 +39,6 @@ class HomeScreenState extends State<HomeScreen> {
 
   AppBar _buildAppBar() {
     return AppBar(
-      leading: IconButton(
-        icon: const Icon(Icons.arrow_back),
-        onPressed: () {
-          Navigator.pop(context);
-        },
-      ),
       actions: [
         IconButton(
           icon: const Icon(Icons.shopping_cart),
