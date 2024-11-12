@@ -1,9 +1,12 @@
+// ignore_for_file: avoid_print
+
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:project_s6_mobile/screens/account_screen.dart';
 import 'package:project_s6_mobile/screens/cart_screen.dart';
 import 'package:project_s6_mobile/screens/product_details_screen.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -14,12 +17,40 @@ class HomeScreen extends StatefulWidget {
 
 class HomeScreenState extends State<HomeScreen> {
   int _currentIndex = 0;
+  String? userName;
+  String? userEmail;
 
   final List<Widget> _screens = [
     const HomeContentScreen(),
     const Center(child: Text('Tienda')),
     const AccountScreen(),
   ];
+
+  @override
+  void initState() {
+    super.initState();
+    _loadUserData();
+  }
+
+  Future<void> _loadUserData() async {
+    try {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+
+      // Test de SharedPreferences: Guardar y recuperar un valor de prueba
+      await prefs.setString('testKey', 'testValue');
+      String? testValue = prefs.getString('testKey');
+      print(
+          "Valor de prueba en SharedPreferences: $testValue"); // Debería imprimir 'testValue'
+
+      // Recuperar los datos reales del usuario
+      setState(() {
+        userName = prefs.getString('userName');
+        userEmail = prefs.getString('userEmail');
+      });
+    } catch (e) {
+      print("Error en _loadUserData: $e");
+    }
+  }
 
   void _onTap(int index) {
     setState(() {
@@ -31,7 +62,32 @@ class HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: _buildAppBar(),
-      body: _screens[_currentIndex],
+      body: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          // Sección de bienvenida del usuario
+          Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'Bienvenido, ${userName ?? 'Usuario'}',
+                  style: const TextStyle(
+                      fontSize: 18, fontWeight: FontWeight.bold),
+                ),
+                Text(
+                  'Email: ${userEmail ?? 'No disponible'}',
+                  style: const TextStyle(fontSize: 14, color: Colors.grey),
+                ),
+              ],
+            ),
+          ),
+          Expanded(
+            child: _screens[_currentIndex],
+          ),
+        ],
+      ),
       bottomNavigationBar: _buildBottomNavigationBar(),
     );
   }
@@ -182,7 +238,8 @@ class HomeContentScreen extends StatelessWidget {
         'brand': 'Nike',
         'old_price': 600.0,
         'new_price': 400.0,
-        'description': 'This is a Product description for Nike Air Max. Placeholder text for now.',
+        'description':
+            'This is a Product description for Nike Air Max. Placeholder text for now.',
       },
       {
         'image': 'assets/ropa/camisa.jpg',
@@ -252,14 +309,16 @@ class HomeContentScreen extends StatelessWidget {
                           top: 8,
                           left: 8,
                           child: Container(
-                            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 8, vertical: 4),
                             decoration: BoxDecoration(
                               color: Colors.yellow,
                               borderRadius: BorderRadius.circular(5),
                             ),
                             child: Text(
                               product['discount'],
-                              style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 12),
+                              style: const TextStyle(
+                                  fontWeight: FontWeight.bold, fontSize: 12),
                             ),
                           ),
                         ),

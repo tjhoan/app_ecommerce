@@ -1,6 +1,7 @@
 // ignore_for_file: use_build_context_synchronously, avoid_print
 
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:project_s6_mobile/screens/home_screen.dart';
 import '../services/api_service.dart';
 import '../models/customer.dart';
@@ -14,7 +15,6 @@ class AuthLoginController {
     required String password,
     required BuildContext context,
   }) async {
-    // Validar si los campos de email y password están vacíos antes de la llamada a la API
     if (email.isEmpty || password.isEmpty) {
       ErrorHandler.showErrorMessage(
         context,
@@ -34,7 +34,24 @@ class AuthLoginController {
         return null;
       }
 
-      // Si la autenticación fue exitosa, mostrar mensaje de bienvenida y redirigir a HomeScreen
+      // Intento de almacenar los datos del usuario en SharedPreferences
+      try {
+        SharedPreferences prefs = await SharedPreferences.getInstance();
+        await prefs.setString('userEmail', customer.email);
+        await prefs.setString(
+            'userName', "${customer.firstName} ${customer.lastName}");
+
+        print("Email guardado: ${prefs.getString('userEmail')}");
+        print("Nombre guardado: ${prefs.getString('userName')}");
+      } catch (error) {
+        print("Error en SharedPreferences: $error");
+        ErrorHandler.showErrorMessage(
+          context,
+          "No se pudieron guardar los datos de usuario.",
+        );
+      }
+
+      // Muestra mensaje de bienvenida
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Row(
@@ -58,6 +75,7 @@ class AuthLoginController {
         ),
       );
 
+      // Redirige al HomeScreen si el login es exitoso
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(builder: (context) => const HomeScreen()),
