@@ -1,6 +1,7 @@
 // ignore_for_file: use_build_context_synchronously
 
 import 'package:flutter/material.dart';
+import 'package:project_s6_mobile/screens/home_screen.dart';
 import 'package:project_s6_mobile/screens/signup_screen.dart';
 import 'package:project_s6_mobile/utils/error_handler.dart';
 import '../widgets/input_field.dart';
@@ -62,10 +63,44 @@ class SignInScreen extends StatelessWidget {
                     password: passwordController.text,
                     context: context,
                   );
+
                   if (customer == null) {
                     ErrorHandler.showErrorMessage(
                       context,
                       'Error: No se pudo iniciar sesión. Verifica tus credenciales o intenta de nuevo.',
+                    );
+                  } else {
+                    // Muestra mensaje de bienvenida
+                    ScaffoldMessenger.of(context).clearSnackBars();
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Row(
+                          children: [
+                            const Icon(Icons.check_circle, color: Colors.white),
+                            const SizedBox(width: 10),
+                            Expanded(
+                              child: Text(
+                                'Bienvenido de nuevo, ${customer.email}',
+                                style: const TextStyle(color: Colors.white),
+                              ),
+                            ),
+                          ],
+                        ),
+                        backgroundColor: Colors.green,
+                        behavior: SnackBarBehavior.floating,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        duration: const Duration(seconds: 3),
+                      ),
+                    );
+
+                    // Navegar a HomeScreen después de mostrar el mensaje de éxito
+                    Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => HomeScreen(customer: customer,),
+                      ),
                     );
                   }
                 },
@@ -78,8 +113,8 @@ class SignInScreen extends StatelessWidget {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) =>
-                            const SignUpScreen()), // Navegar a SignUpScreen
+                      builder: (context) => const SignUpScreen(),
+                    ),
                   );
                 },
                 style: OutlinedButton.styleFrom(
@@ -89,8 +124,6 @@ class SignInScreen extends StatelessWidget {
               ),
 
               const SizedBox(height: 20),
-
-              // Divider and Social Login
               Center(
                 child: Column(
                   children: [
@@ -101,15 +134,11 @@ class SignInScreen extends StatelessWidget {
                       children: [
                         IconButton(
                           icon: const Icon(Icons.g_mobiledata),
-                          onPressed: () {
-                            // Acción de inicio de sesión con Google
-                          },
+                          onPressed: () {},
                         ),
                         IconButton(
                           icon: const Icon(Icons.facebook),
-                          onPressed: () {
-                            // Acción de inicio de sesión con Facebook
-                          },
+                          onPressed: () {},
                         ),
                       ],
                     ),

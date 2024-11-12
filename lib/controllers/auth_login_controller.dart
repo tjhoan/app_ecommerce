@@ -2,7 +2,6 @@
 
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:project_s6_mobile/screens/home_screen.dart';
 import '../services/api_service.dart';
 import '../models/customer.dart';
 import '../utils/error_handler.dart';
@@ -38,8 +37,7 @@ class AuthLoginController {
       try {
         SharedPreferences prefs = await SharedPreferences.getInstance();
         await prefs.setString('userEmail', customer.email);
-        await prefs.setString(
-            'userName', "${customer.firstName} ${customer.lastName}");
+        await prefs.setString('userName', "${customer.firstName} ${customer.lastName}");
 
         print("Email guardado: ${prefs.getString('userEmail')}");
         print("Nombre guardado: ${prefs.getString('userName')}");
@@ -51,36 +49,7 @@ class AuthLoginController {
         );
       }
 
-      // Muestra mensaje de bienvenida
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Row(
-            children: [
-              const Icon(Icons.check_circle, color: Colors.white),
-              const SizedBox(width: 10),
-              Expanded(
-                child: Text(
-                  'Bienvenido de nuevo, ${customer.email}',
-                  style: const TextStyle(color: Colors.white),
-                ),
-              ),
-            ],
-          ),
-          backgroundColor: Colors.green,
-          behavior: SnackBarBehavior.floating,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(10),
-          ),
-          duration: const Duration(seconds: 3),
-        ),
-      );
-
-      // Redirige al HomeScreen si el login es exitoso
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (context) => const HomeScreen()),
-      );
-
+      // Si todo es exitoso, retorna el objeto customer
       return customer;
     } catch (error) {
       ErrorHandler.showErrorMessage(context, error.toString());

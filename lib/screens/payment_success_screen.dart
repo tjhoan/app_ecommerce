@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:project_s6_mobile/screens/home_screen.dart';
+// import 'package:project_s6_mobile/screens/home_screen.dart';
 
 class PaymentSuccessScreen extends StatelessWidget {
   const PaymentSuccessScreen({super.key});
@@ -49,9 +49,10 @@ class PaymentSuccessScreen extends StatelessWidget {
                   ),
                 ),
                 onPressed: () {
-                  Navigator.pushAndRemoveUntil(context, 
-                  MaterialPageRoute(builder: (context) => const HomeScreen()),
-                  (Route<dynamic> route) => false);
+                  // Redirigir a HomeScreen después de mostrar el mensaje de éxito
+                  // Navigator.pushAndRemoveUntil(context, 
+                  // MaterialPageRoute(builder: (context) => const HomeScreen()),
+                  // (Route<dynamic> route) => false);
                 },
                 child: const Text(
                   'Continuar Comprando',

@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 
 class ErrorHandler {
   static void showErrorMessage(BuildContext context, String message) {
+    // Limpiar cualquier SnackBar existente antes de mostrar uno nuevo
+    ScaffoldMessenger.of(context).clearSnackBars();
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Row(

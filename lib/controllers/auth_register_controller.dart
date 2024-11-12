@@ -1,6 +1,7 @@
 // ignore_for_file: use_build_context_synchronously, avoid_print
 
 import 'package:flutter/material.dart';
+import 'package:project_s6_mobile/screens/home_screen.dart';
 import '../services/api_service.dart';
 import '../models/customer.dart';
 
@@ -21,8 +22,9 @@ class AuthRegisterController {
         email,
         password,
       );
-      
+
       if (customer != null) {
+        ScaffoldMessenger.of(context).clearSnackBars();
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Row(
@@ -45,18 +47,30 @@ class AuthRegisterController {
             duration: const Duration(seconds: 3),
           ),
         );
+
+        // Redirigir a HomeScreen después de mostrar el mensaje de éxito
+        Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+              builder: (context) => HomeScreen(customer: customer),
+            ));
+
+        return customer;
       }
 
       return customer;
     } catch (error) {
-      String errorMessage = 'Ocurrió un error inesperado. Por favor, inténtalo de nuevo.';
-      
+      String errorMessage =
+          'Ocurrió un error inesperado. Por favor, inténtalo de nuevo.';
+
       if (error is FormatException) {
-        errorMessage = 'Error de formato en la respuesta. Revisa la conexión o contacta al soporte.';
+        errorMessage =
+            'Error de formato en la respuesta. Revisa la conexión o contacta al soporte.';
       } else {
         errorMessage = error.toString();
       }
 
+      ScaffoldMessenger.of(context).clearSnackBars();
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Row(

@@ -1,15 +1,13 @@
-// ignore_for_file: avoid_print
-
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
+import 'package:project_s6_mobile/models/customer.dart';
 import 'package:project_s6_mobile/screens/account_screen.dart';
 import 'package:project_s6_mobile/screens/cart_screen.dart';
 import 'package:project_s6_mobile/screens/product_details_screen.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class HomeScreen extends StatefulWidget {
-  const HomeScreen({super.key});
+  const HomeScreen({super.key, required Customer customer});
 
   @override
   HomeScreenState createState() => HomeScreenState();
@@ -17,40 +15,12 @@ class HomeScreen extends StatefulWidget {
 
 class HomeScreenState extends State<HomeScreen> {
   int _currentIndex = 0;
-  String? userName;
-  String? userEmail;
 
   final List<Widget> _screens = [
     const HomeContentScreen(),
     const Center(child: Text('Tienda')),
     const AccountScreen(),
   ];
-
-  @override
-  void initState() {
-    super.initState();
-    _loadUserData();
-  }
-
-  Future<void> _loadUserData() async {
-    try {
-      SharedPreferences prefs = await SharedPreferences.getInstance();
-
-      // Test de SharedPreferences: Guardar y recuperar un valor de prueba
-      await prefs.setString('testKey', 'testValue');
-      String? testValue = prefs.getString('testKey');
-      print(
-          "Valor de prueba en SharedPreferences: $testValue"); // Debería imprimir 'testValue'
-
-      // Recuperar los datos reales del usuario
-      setState(() {
-        userName = prefs.getString('userName');
-        userEmail = prefs.getString('userEmail');
-      });
-    } catch (e) {
-      print("Error en _loadUserData: $e");
-    }
-  }
 
   void _onTap(int index) {
     setState(() {
@@ -62,38 +32,19 @@ class HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: _buildAppBar(),
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          // Sección de bienvenida del usuario
-          Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  'Bienvenido, ${userName ?? 'Usuario'}',
-                  style: const TextStyle(
-                      fontSize: 18, fontWeight: FontWeight.bold),
-                ),
-                Text(
-                  'Email: ${userEmail ?? 'No disponible'}',
-                  style: const TextStyle(fontSize: 14, color: Colors.grey),
-                ),
-              ],
-            ),
-          ),
-          Expanded(
-            child: _screens[_currentIndex],
-          ),
-        ],
-      ),
+      body: _screens[_currentIndex],
       bottomNavigationBar: _buildBottomNavigationBar(),
     );
   }
 
   AppBar _buildAppBar() {
     return AppBar(
+      leading: IconButton(
+        icon: const Icon(Icons.arrow_back),
+        onPressed: () {
+          Navigator.pop(context);
+        },
+      ),
       actions: [
         IconButton(
           icon: const Icon(Icons.shopping_cart),
@@ -138,7 +89,8 @@ class HomeContentScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return SingleChildScrollView(
       child: Padding(
-        padding: const EdgeInsets.all(16.0),
+        // padding: const EdgeInsets.all(16.0),
+        padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
